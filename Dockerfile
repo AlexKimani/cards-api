@@ -9,6 +9,7 @@ RUN chmod a+rwx -R /var/log/
 COPY src /usr/app/src
 COPY pom.xml /usr/app
 
+WORKDIR /usr/app
 # Build the code and cache the dependency jars
 RUN mvn dependency:go-offline -B
 
