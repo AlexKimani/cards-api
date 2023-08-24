@@ -68,7 +68,11 @@ public class AbstractIntegrationTestInitializer
                 .addFirst(new MapPropertySource("application", Map.of(
                         "spring.r2dbc.url", mySQLContainer.getJdbcUrl().replaceFirst("jdbc", "r2dbc"),
                         "spring.r2dbc.username", mySQLContainer.getUsername(),
-                        "spring.r2dbc.password", mySQLContainer.getPassword()
+                        "spring.r2dbc.password", mySQLContainer.getPassword(),
+                        "spring.liquibase.url", mySQLContainer.getJdbcUrl(),
+                        "spring.liquibase.user", mySQLContainer.getUsername(),
+                        "spring.liquibase.password", mySQLContainer.getPassword()
+
                 )));
     }
 

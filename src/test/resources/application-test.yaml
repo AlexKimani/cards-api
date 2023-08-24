@@ -1,7 +1,8 @@
 spring:
   application:
     name: cards-api
-
+  liquibase:
+    change-log: db/changelog/db-test-changelog.yaml
   sql:
     init:
       mode: always
