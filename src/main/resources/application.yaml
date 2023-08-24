@@ -31,6 +31,12 @@ logging:
     path: ${LOG_PATH:/tmp/cards/}
 server:
   port: ${PORT:8080}
+  undertow:
+    buffer-size: 1024
+    direct-buffers: true
+    threads:
+      io: 1000
+      worker: 5000
 management:
   endpoint:
     health:
