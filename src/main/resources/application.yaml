@@ -41,3 +41,7 @@ management:
   endpoint:
     health:
       enabled: true
+springfox:
+  documentation:
+    swagger-ui:
+      enabled: true
