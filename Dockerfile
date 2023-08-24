@@ -10,7 +10,9 @@ COPY src /usr/app/src
 COPY pom.xml /usr/app
 
 # Build the code and cache the dependency jars
-RUN --mount=type=cache,target=/root/.m2,rw mvn dependency:go-offline -f /usr/app/pom.xml clean package
+RUN mvn dependency:go-offline -B
+
+RUN mvn clean package -DskipTests
 
 # Create the run target service
 FROM openjdk:20-slim
