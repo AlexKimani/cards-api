@@ -30,8 +30,8 @@ services:
     depends_on:
       - service-mysql
     environment:
-      - DATABASE_URL=r2dbc:mysql://service-mysql:3306/cards?allowPublicKeyRetrieval=true&useSSL=false&useLegacyDatetimeCode=false
-      - LIQUIBASE_DATABASE_URL=jdbc:mysql://service-mysql:3306/cards?allowPublicKeyRetrieval=true&useSSL=false&useLegacyDatetimeCode=false
+      - DATABASE_URL=jdbc:mysql://service-mysql:3306/cards?allowPublicKeyRetrieval=true&useSSL=false&useLegacyDatetimeCode=false
+      - LIQUIBASE_DATABASE_URL=jdbc:mysql://service-mysql:3306/cards?&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&useLegacyDatetimeCode=false
       - LIQUIBASE_CHANGELOG=db/changelog/db-changelog.yaml
       - DATABASE_NAME=cards
       - DATABASE_USER=user
@@ -47,6 +47,7 @@ services:
       - LOG_PATH=/var/log/
       - LOG_LEVEL=DEBUG
       - PORT=8080
+      - JWT_TOKEN=8705E66163F4715FA42586D510D859BEFDBBBFBE52A191A12E3B7D2EDD230854
     external_links:
       - service-mysql
     restart: on-failure
