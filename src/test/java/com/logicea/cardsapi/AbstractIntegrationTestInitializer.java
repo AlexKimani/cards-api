@@ -18,8 +18,6 @@ import org.testcontainers.utility.DockerImageName;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static java.lang.String.format;
-
 @Slf4j
 public class AbstractIntegrationTestInitializer
         implements ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -66,9 +64,9 @@ public class AbstractIntegrationTestInitializer
 
         environment.getPropertySources()
                 .addFirst(new MapPropertySource("application", Map.of(
-                        "spring.r2dbc.url", mySQLContainer.getJdbcUrl().replaceFirst("jdbc", "r2dbc"),
-                        "spring.r2dbc.username", mySQLContainer.getUsername(),
-                        "spring.r2dbc.password", mySQLContainer.getPassword(),
+                        "spring.datasource.hikari.jdbc-url", mySQLContainer.getJdbcUrl(),
+                        "spring.datasource.hikari.username", mySQLContainer.getUsername(),
+                        "spring.datasource.hikari.password", mySQLContainer.getPassword(),
                         "spring.liquibase.url", mySQLContainer.getJdbcUrl(),
                         "spring.liquibase.user", mySQLContainer.getUsername(),
                         "spring.liquibase.password", mySQLContainer.getPassword()
@@ -78,14 +76,10 @@ public class AbstractIntegrationTestInitializer
 
     @DynamicPropertySource
     private static void setDatasourceProperties(DynamicPropertyRegistry registry) {
-        // R2DBC DataSource Example
-        registry.add("spring.r2dbc.url", () ->
-                format("r2dbc:tc:mariadb://%s:%d/%s",
-                        mySQLContainer.getHost(),
-                        mySQLContainer.getFirstMappedPort(),
-                        mySQLContainer.getDatabaseName()));
-        registry.add("spring.r2dbc.username", mySQLContainer::getUsername);
-        registry.add("spring.r2dbc.password", mySQLContainer::getPassword);
+        // JDBC DataSource Example
+        registry.add("spring.datasource.hikari.url", mySQLContainer::getJdbcUrl);
+        registry.add("spring.datasource.hikari.username", mySQLContainer::getUsername);
+        registry.add("spring.datasource.hikari.password", mySQLContainer::getPassword);
         registry.add("spring.liquibase.url", mySQLContainer::getJdbcUrl);
         registry.add("spring.liquibase.user", mySQLContainer::getUsername);
         registry.add("spring.liquibase.password", mySQLContainer::getPassword);
