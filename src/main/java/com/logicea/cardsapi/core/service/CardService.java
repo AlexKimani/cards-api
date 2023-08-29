@@ -13,11 +13,10 @@ public interface CardService {
     /**
      * Gets all cards by user.
      *
-     * @param username the username
      * @param pageable the pageable
      * @return the all cards by user
      */
-    Page<Card> getAllCards(String username, Pageable pageable);
+    Page<Card> getAllCards(Pageable pageable);
 
     /**
      * Gets all cards created by user.
@@ -44,6 +43,15 @@ public interface CardService {
      * @return the card by id
      */
     Optional<Card> getCardById(long id);
+
+    /**
+     * Gets card by id and user id.
+     *
+     * @param id     the id
+     * @param userid the userid
+     * @return the card by id and user id
+     */
+    Optional<Card> getCardByIdAndUserId(long id, long userid);
 
     /**
      * Update card.

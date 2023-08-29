@@ -2,7 +2,6 @@ package com.logicea.cardsapi.integration.core.service.impl;
 
 import com.logicea.cardsapi.AbstractIntegrationTest;
 import com.logicea.cardsapi.core.repository.UserRepository;
-import com.logicea.cardsapi.core.service.UserDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,9 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class UserDetailsServiceImplTest extends AbstractIntegrationTest {
     @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
     private UserRepository userRepository;
 
     @BeforeEach
@@ -27,11 +23,6 @@ class UserDetailsServiceImplTest extends AbstractIntegrationTest {
 
     @AfterEach
     void tearDown() {
-    }
-
-    @Test
-    void loadUserByUserName() {
-        log.info("{}",this.userDetailsService.loadUserByUserName("admin@test.com"));
     }
 
     @Test

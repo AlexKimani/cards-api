@@ -7,10 +7,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Collection;
 import java.util.Comparator;
+import java.util.Set;
 
-import static java.util.Comparator.*;
+import static java.util.Comparator.comparing;
 
 @Entity
 @Getter
@@ -18,7 +18,7 @@ import static java.util.Comparator.*;
 @Table(name = "cards")
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
-public class Card extends Auditable<User> implements Comparable<Card> {
+public class Card extends Auditable implements Comparable<Card> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,7 +29,6 @@ public class Card extends Auditable<User> implements Comparable<Card> {
     @Enumerated(EnumType.STRING)
     @Column(length = 10)
     private CardStatus status;
-
     public Card() {
         this.status = CardStatus.TO_DO;
     }
@@ -87,5 +86,5 @@ public class Card extends Auditable<User> implements Comparable<Card> {
     public static final Comparator<Card> nameComparator = comparing(Card::getName);
     public static final Comparator<Card> colorComparator = comparing(Card::getColor);
     public static final Comparator<Card> statusComparator = comparing(Card::getStatus);
-    public static final Comparator<Card> dateCreatedComparator = comparing(Card::getDateCreated);
+    public static final Comparator<Card> dateCreatedComparator = comparing(Card::getCreatedAt);
 }

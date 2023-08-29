@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping(path = "/v1/")
+@RequestMapping(path = "/v1")
 @RequiredArgsConstructor
 @Tag(name = "Authentication", description = "API to Authenticate User into Cards service.")
 public class AuthenticationController {

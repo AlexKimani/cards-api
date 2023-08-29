@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -30,20 +30,26 @@ public class User {
                     name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
-    private Collection<Role> roles;
+    private Set<Role> roles;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "card_access",
-            joinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "card_id", referencedColumnName = "id"))
-    private Collection<Card> cards;
+    @OneToMany(mappedBy = "createdBy", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+//    @JoinTable(
+//            name = "card_access",
+//            joinColumns = @JoinColumn(
+//                    name = "user_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(
+//                    name = "card_id", referencedColumnName = "id"))
+    private Set<Card> cards;
 
     public User() {
         super();
         this.enabled = true;
+    }
+
+    public User(Long id, String email, boolean enabled) {
+        this.id = id;
+        this.email = email;
+        this.enabled = enabled;
     }
 
     // Getters and setters

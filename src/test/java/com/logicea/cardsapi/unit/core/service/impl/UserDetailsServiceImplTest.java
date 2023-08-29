@@ -39,8 +39,7 @@ class UserDetailsServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        this.userDetailsService = new UserDetailsServiceImpl(this.userRepository, passwordEncoder);
+        this.userDetailsService = new UserDetailsServiceImpl();
 
         this.user = this.setUser();
         this.loginRequest = this.setLoginRequest();
@@ -57,7 +56,7 @@ class UserDetailsServiceImplTest {
     void testGivenAValidLoginRequestObjectShouldReturnAUserDetailsObject() throws Exception {
         doReturn(Optional.of(this.user)).when(this.userRepository).findUserByEmail(this.loginRequest.getEmailAddress());
         final UserDetails userDetails = assertDoesNotThrow(() ->
-                this.userDetailsService.loadUserByUserDetails(this.loginRequest));
+                this.userDetailsService.loadUserByUsername(this.loginRequest.getEmailAddress()));
         verify(this.userRepository, times(1)).findUserByEmail(anyString());
         assertNotNull(userDetails);
         assertEquals(this.loginRequest.getEmailAddress(), userDetails.getUsername());
@@ -70,7 +69,7 @@ class UserDetailsServiceImplTest {
         String expectedMessage = String.format(ErrorCode.ERROR_1000.getMessage(), this.loginRequest.getEmailAddress());
 
         final AuthenticationException thrown = assertThrows(AuthenticationException.class, () ->
-                this.userDetailsService.loadUserByUserDetails(this.loginRequest));
+                this.userDetailsService.loadUserByUsername(this.loginRequest.getEmailAddress()));
         verify(this.userRepository, times(1)).findUserByEmail(anyString());
         assertNotNull(thrown);
         assertEquals(expectedMessage, thrown.getMessage());
@@ -84,7 +83,7 @@ class UserDetailsServiceImplTest {
         String expectedMessage = String.format(ErrorCode.ERROR_1001.getMessage(), this.loginRequest.getEmailAddress());
 
         final AuthenticationException thrown = assertThrows(AuthenticationException.class, () ->
-                this.userDetailsService.loadUserByUserDetails(this.loginRequest));
+                this.userDetailsService.loadUserByUsername(this.loginRequest.getEmailAddress()));
         verify(this.userRepository, times(1)).findUserByEmail(anyString());
         assertNotNull(thrown);
         assertEquals(expectedMessage, thrown.getMessage());

@@ -1,21 +1,24 @@
 package com.logicea.cardsapi.rest.facade.impl;
 
-import com.logicea.cardsapi.core.service.UserDetailsService;
+import com.logicea.cardsapi.core.enums.ErrorCode;
 import com.logicea.cardsapi.exception.AuthenticationException;
 import com.logicea.cardsapi.rest.dto.request.LoginRequest;
 import com.logicea.cardsapi.rest.dto.response.TokenResponse;
 import com.logicea.cardsapi.rest.facade.AuthenticationFacade;
 import com.logicea.cardsapi.security.TokenManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthenticationFacadeImpl implements AuthenticationFacade {
     private final TokenManager tokenManager;
-    private final UserDetailsService userDetailsService;
-
+    private final AuthenticationManager authenticationManager;
     /**
      * Create authentication token response.
      *
@@ -25,8 +28,14 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
      */
     @Override
     public TokenResponse createAuthentication(LoginRequest request) throws AuthenticationException {
-        final UserDetails userDetails = this.userDetailsService.loadUserByUserDetails(request);
-        String token = this.tokenManager.generateToken(userDetails);
+        final Authentication authentication = this.authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(request.getEmailAddress(), request.getPassword()));
+        if (!authentication.isAuthenticated()) {
+            log.warn(String.format(ErrorCode.ERROR_1001.getMessage(), request.getEmailAddress()));
+            throw new AuthenticationException(
+                    String.format(ErrorCode.ERROR_1001.getMessage(), request.getEmailAddress()));
+        }
+        String token = this.tokenManager.generateToken(request.getEmailAddress());
         return TokenResponse.builder()
                 .token(token)
                 .build();
