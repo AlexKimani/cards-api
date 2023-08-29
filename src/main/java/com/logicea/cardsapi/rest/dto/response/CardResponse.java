@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Data
 @Getter
@@ -29,11 +30,15 @@ public class CardResponse implements Serializable {
     @JsonProperty(value = "description")
     private String description;
 
+    @Schema(description = "The card color", defaultValue = "#FF6753")
+    @JsonProperty(value = "color")
+    private String color;
+
     @Schema(description = "The status of the card", defaultValue = "To Do")
     @JsonProperty(value = "status")
     private String status;
 
     @Schema(description = "The date car was created", defaultValue = "2023-08-27")
     @JsonProperty(value = "date_created")
-    private Date dateCreated;
+    private Timestamp dateCreated;
 }

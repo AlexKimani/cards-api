@@ -13,7 +13,5 @@ databaseChangeLog:
       file: db/changelog/changes/tbl_user_roles.sql
   - include:
       file: db/changelog/changes/tbl_cards.sql
-  - include:
-      file: db/changelog/changes/tbl_card_access.sql
   - includeAll:
       path: db/changelog/changes/data/

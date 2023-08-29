@@ -1,35 +1,25 @@
 package com.logicea.cardsapi.core.service.impl;
 
+import com.logicea.cardsapi.core.entity.User;
+import com.logicea.cardsapi.core.enums.ErrorCode;
 import com.logicea.cardsapi.core.repository.UserRepository;
+import com.logicea.cardsapi.exception.AuthenticationException;
+import com.logicea.cardsapi.security.models.UserInfo;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.logicea.cardsapi.core.service.impl.UserService.getUserDetails;
-
 @Slf4j
 @Service
 @Transactional
-public class UserDetailsServiceImpl implements UserDetailsService {
-    private UserRepository userRepository;
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    /**
-     * Load user by username.
-     *
-     * @param userEmail the user email
-     * @return the user details
-     */
-    public UserDetails loadUserByUserEmail(String userEmail) {
-        return getUserDetails(userEmail, this.userRepository, log);
-    }
+@RequiredArgsConstructor
+public class UserService implements UserDetailsService {
+    private final UserRepository userRepository;
 
     /**
      * Locates the user based on the username. In the actual implementation, the search
@@ -45,6 +35,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return this.loadUserByUserEmail(username);
+        return getUserDetails(username, this.userRepository, log);
+    }
+
+    static UserDetails getUserDetails(String username, UserRepository userRepository, Logger log) {
+        final User user = userRepository.findUserByEmail(username)
+                .orElseThrow(() -> {
+                    log.warn(String.format(ErrorCode.ERROR_1000.getMessage(), username));
+                    return new AuthenticationException(String.format(ErrorCode.ERROR_1000.getMessage(), username));
+                });
+        return new UserInfo(user);
     }
 }

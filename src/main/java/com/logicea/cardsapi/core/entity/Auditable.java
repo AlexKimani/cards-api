@@ -16,13 +16,11 @@ import java.util.Collection;
 @Setter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class Auditable<U> {
+public abstract class Auditable {
     @CreatedBy
-    @ManyToMany(mappedBy = "cards")
-    private Collection<U> users;
-    @CreatedDate
-    @Temporal(TemporalType.DATE)
-    private Date dateCreated;
+    @ManyToOne
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    private User createdBy;
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp createdAt;
