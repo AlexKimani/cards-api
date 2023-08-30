@@ -4,6 +4,7 @@ import com.logicea.cardsapi.rest.dto.request.CardDeleteRequest;
 import com.logicea.cardsapi.rest.dto.request.CardRequest;
 import com.logicea.cardsapi.rest.dto.response.CardDeletionResponse;
 import com.logicea.cardsapi.rest.dto.response.CardResponse;
+import com.logicea.cardsapi.rest.dto.response.PagedResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,7 +15,7 @@ public interface CardFacade {
      * @param pageable the pageable
      * @return the all cards by user
      */
-    Page<CardResponse> getAllCards(Pageable pageable);
+    PagedResponse getAllCards(Pageable pageable);
 
     /**
      * Gets all cards created by user.
@@ -23,7 +24,7 @@ public interface CardFacade {
      * @param pageable  The Page setup details
      * @return the all cards created by user
      */
-    Page<CardResponse> getAllCardsCreatedByUser(Pageable pageable);
+    PagedResponse getAllCardsCreatedByUser(Pageable pageable);
 
     /**
      * Create new card.

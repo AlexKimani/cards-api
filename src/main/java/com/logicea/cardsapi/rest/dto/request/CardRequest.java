@@ -6,6 +6,7 @@ import com.logicea.cardsapi.core.enums.CardStatus;
 import com.logicea.cardsapi.rest.validations.ColorValidator;
 import com.logicea.cardsapi.rest.validations.EnumValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
@@ -19,7 +20,7 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CardRequest implements Serializable {
     @Schema(defaultValue = "Card Test", description = "Card name")
-    @NotNull(message = "The name cannot be null")
+    @NotBlank(message = "The name cannot be blank")
     @JsonProperty(value = "name")
     private String name;
 

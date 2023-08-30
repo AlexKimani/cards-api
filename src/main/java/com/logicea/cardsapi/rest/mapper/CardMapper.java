@@ -6,6 +6,7 @@ import com.logicea.cardsapi.core.enums.ErrorCode;
 import com.logicea.cardsapi.rest.dto.request.CardRequest;
 import com.logicea.cardsapi.rest.dto.response.CardDeletionResponse;
 import com.logicea.cardsapi.rest.dto.response.CardResponse;
+import com.logicea.cardsapi.rest.dto.response.PagedResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -59,13 +60,19 @@ public class CardMapper {
      * @param cardPage the card page
      * @return the paged card response
      */
-    public static Page<CardResponse> getPagedCardResponse(Page<Card> cardPage) {
+    public static PagedResponse getPagedCardResponse(Page<Card> cardPage) {
         List<CardResponse> cardResponses = cardPage.getContent()
                 .stream()
                 .map(CardMapper::getCardResponse)
                 .collect(Collectors.toList());
-        Pageable responsePage = PageRequest.of(cardPage.getNumber(), cardPage.getSize(), cardPage.getSort());
-        return new PageImpl<>(cardResponses, responsePage, cardResponses.size());
+        return PagedResponse.builder()
+                .page(cardPage.getNumber())
+                .sorted(cardPage.getSort().isSorted())
+                .size(cardPage.getSize())
+                .totalNumberOfElements(cardPage.getTotalElements())
+                .totalPages(cardPage.getTotalPages())
+                .content(cardResponses)
+                .build();
     }
 
     /**

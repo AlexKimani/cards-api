@@ -11,6 +11,7 @@ import com.logicea.cardsapi.rest.dto.request.CardDeleteRequest;
 import com.logicea.cardsapi.rest.dto.request.CardRequest;
 import com.logicea.cardsapi.rest.dto.response.CardDeletionResponse;
 import com.logicea.cardsapi.rest.dto.response.CardResponse;
+import com.logicea.cardsapi.rest.dto.response.PagedResponse;
 import com.logicea.cardsapi.rest.facade.impl.CardFacadeImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -77,7 +78,7 @@ class CardFacadeImplTest {
     void getAllCardsCreatedByUser() {
         doReturn(this.user.getEmail()).when(this.auditedUserService).getCurrentUser();
         doReturn(this.setPagedCards(pageable)).when(this.cardService).getAllCardsCreatedByUser(this.user.getEmail(), this.pageable);
-        Page<CardResponse> cards = assertDoesNotThrow(() -> this.cardFacade.getAllCardsCreatedByUser(this.pageable));
+        PagedResponse cards = assertDoesNotThrow(() -> this.cardFacade.getAllCardsCreatedByUser(this.pageable));
         verify(this.cardService, times(1)).getAllCardsCreatedByUser(anyString(), any(Pageable.class));
         assertNotNull(cards);
     }
