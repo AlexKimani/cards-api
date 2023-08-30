@@ -51,8 +51,16 @@ git clone git@github.com:AlexKimani/cards-api.git
 * `docker-compose build service-cards`.
 
 ### Available Service Endpoints
-
-
+All endpoints are documented on Swagger API: `{{base-url}/swagger-ui.html` with JWT Authentication Support
+* Authentication API: [POST] `{base-url}/v1/authenticate`
+* Create Card: [POST] `{base-url}/v1/card`
+* Get card by id: [GET] `{base-url}/v1/card/{id}`
+* Get user cards: [GET] `{base-url}/v1/card/all`
+* Get All Cards: Admin [GET] `{base-url}/v1/card/admin`
+* Update a card: [PUT] `{base-url}/v1/card/{id}`
+* Delete a Card: [DELETE] `{base-url}/v1/card`
+* Delete All cards: Admin [DELETE] `{base-url}/v1/card/admin/all`
+ 
 
 ### Reference Documentation
 
