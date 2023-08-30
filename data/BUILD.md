@@ -57,4 +57,4 @@ All endpoints are documented on Swagger API: `{base-url}/swagger-ui.html` with J
 * Click on **Authorize**, add the token and click on `Authorize`.
 * Now you can test the other endpoints with the token until it expires.
 
-**Note:** For the Member user, the username is `member@test.com` and password is: `password`
+**Note:** For the Member user, the username is `user@test.com` and password is: `password`
