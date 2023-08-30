@@ -20,46 +20,8 @@ Assume an application named Cards that allows users to create and manage tasks i
   - Available statuses are To Do, In Progress and Done
 - A user can delete a card they have access to
 
-### Logging
-- For local deployment, it is available on STDOUT using the format configured in [logback-spring.xml](src/main/resources/logback-spring.xml)
-
-## Setup Guide
-### Requirements
-
-For building and running the application you need:
-
-- [JDK 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
-
-### **Here is our quickstart guide.**
-* Clone the repo
-```shell  
-git clone git@github.com:AlexKimani/cards-api.git  
-```  
-* When you attempt to clone the repository, you receive the error message. [Fix – git@github.com : permission denied](https://dev.classmethod.jp/articles/fix-gitgithub-com-permission-denied-publickey-fatal-could-not-read-from-remote-repository/)
-* [Install docker](https://docs.docker.com/get-docker/). Ensure that docker is always running.
-
-## Running and testing
-* via IDE for local debugging (recommended)
-* Run all the required Services on Docker `docker-compose up`.  
-  Please follow the troubleshooting section if you are facing any issue
-* Start app via IDE (SpringBoot: `com.logicea.cardsapi.CardsApiApplication`). [Not Recommended]
-* Build and Test
-* `./mvnw clean package`
-* Integration tests will use test configs
-* Run
-* via Docker
-* `docker-compose build service-cards`.
-
-### Available Service Endpoints
-All endpoints are documented on Swagger API: `{{base-url}/swagger-ui.html` with JWT Authentication Support
-* Authentication API: [POST] `{base-url}/v1/authenticate`
-* Create Card: [POST] `{base-url}/v1/card`
-* Get card by id: [GET] `{base-url}/v1/card/{id}`
-* Get user cards: [GET] `{base-url}/v1/card/all`
-* Get All Cards: Admin [GET] `{base-url}/v1/card/admin`
-* Update a card: [PUT] `{base-url}/v1/card/{id}`
-* Delete a Card: [DELETE] `{base-url}/v1/card`
-* Delete All cards: Admin [DELETE] `{base-url}/v1/card/admin/all`
+### Build
+**To run and test the application refer to:** [BUILD.md](data%2FBUILD.md)
  
 
 ### Reference Documentation
