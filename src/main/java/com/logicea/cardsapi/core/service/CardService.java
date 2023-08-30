@@ -22,11 +22,10 @@ public interface CardService {
      * Gets all cards created by user.
      *
      * @param username  the username
-     * @param sortField the sort field
      * @param pageable  The Page setup details
      * @return the all cards created by user
      */
-    Page<Card> getAllCardsCreatedByUser(String username, String sortField, Pageable pageable);
+    Page<Card> getAllCardsCreatedByUser(String username, Pageable pageable);
 
     /**
      * Create new card.

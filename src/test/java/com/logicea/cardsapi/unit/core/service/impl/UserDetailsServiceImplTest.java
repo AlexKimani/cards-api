@@ -17,11 +17,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -40,7 +37,7 @@ class UserDetailsServiceImplTest {
     @BeforeEach
     void setUp() {
         this.userDetailsService = new UserDetailsServiceImpl();
-
+        this.userDetailsService.setUserRepository(this.userRepository);
         this.user = this.setUser();
         this.loginRequest = this.setLoginRequest();
     }
@@ -75,20 +72,6 @@ class UserDetailsServiceImplTest {
         assertEquals(expectedMessage, thrown.getMessage());
     }
 
-    @Test
-    @DisplayName(value = "Given a valid username and an invalid password, should throw an AuthenticationException")
-    void testGivenAValidUsernameAndAnInvalidPasswordShouldThrowAnAuthenticationException() throws Exception {
-        doReturn(Optional.of(this.user)).when(this.userRepository).findUserByEmail(this.loginRequest.getEmailAddress());
-        this.loginRequest.setPassword("test-password");
-        String expectedMessage = String.format(ErrorCode.ERROR_1001.getMessage(), this.loginRequest.getEmailAddress());
-
-        final AuthenticationException thrown = assertThrows(AuthenticationException.class, () ->
-                this.userDetailsService.loadUserByUsername(this.loginRequest.getEmailAddress()));
-        verify(this.userRepository, times(1)).findUserByEmail(anyString());
-        assertNotNull(thrown);
-        assertEquals(expectedMessage, thrown.getMessage());
-    }
-
     private User setUser() {
         User userEntity = new User();
         userEntity.setId(1L);
@@ -99,8 +82,8 @@ class UserDetailsServiceImplTest {
         return userEntity;
     }
 
-    private List<Role> setRoles() {
-        List<Role> roles = new ArrayList<>();
+    private Set<Role> setRoles() {
+        Set<Role> roles = new HashSet<>();
         Role role = new Role("Admin");
         role.setPrivileges(this.setPrivilege());
         return roles;

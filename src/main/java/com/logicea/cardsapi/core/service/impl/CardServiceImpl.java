@@ -42,27 +42,10 @@ public class CardServiceImpl implements CardService {
      * @return the all cards created by user
      */
     @Override
-    public Page<Card> getAllCardsCreatedByUser(String username, String sortField, Pageable pageable) {
+    public Page<Card> getAllCardsCreatedByUser(String username, Pageable pageable) {
         User user = this.userRepository.findUserByEmail(username)
                 .orElseThrow(() -> new ServiceException(String.format(ErrorCode.ERROR_1000.getMessage(), username)));
-        Page<Card> cards = this.cardRepository.findCardsByCreatedBy(user, pageable);
-//        List<Card> userCards = cards.getContent();
-//        if ("name".equalsIgnoreCase(sortField)) {
-//            userCards.sort(Card.nameComparator);
-//        } else if ("color".equalsIgnoreCase(sortField)) {
-//            userCards.sort(Card.colorComparator);
-//        } else if ("status".equalsIgnoreCase(sortField)) {
-//            userCards.sort(Card.statusComparator);
-//        } else if ("date_created".equalsIgnoreCase(sortField)) {
-//            userCards.sort(Card.dateCreatedComparator);
-//        } else {
-//            Collections.sort(userCards);
-//        }
-//        int start = (int) pageable.getOffset();
-//        int end = Math.min((start + pageable.getPageSize()), userCards.size());
-//        List<Card> pageContent = userCards.subList(start, end);
-//        return new PageImpl<>(pageContent, pageable, userCards.size());
-        return cards;
+        return this.cardRepository.findCardsByCreatedBy(user, pageable);
     }
 
     /**

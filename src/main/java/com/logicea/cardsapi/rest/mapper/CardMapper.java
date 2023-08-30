@@ -30,8 +30,8 @@ public class CardMapper {
     public static Card createCardEntity(CardRequest request) {
         Card card = new Card();
         card.setName(request.getName());
-        card.setDescription(request.getDescription() != null ? request.getDescription() : "");
-        card.setColor(request.getColor() != null ? request.getColor() : "");
+        card.setDescription(request.getDescription() != null ? request.getDescription() : null);
+        card.setColor(request.getColor() != null ? request.getColor() : null);
         card.setStatus(request.getStatus() != null ? CardStatus.fromString(request.getStatus()) : CardStatus.TO_DO);
         return card;
     }
@@ -44,10 +44,10 @@ public class CardMapper {
      */
     public static CardResponse getCardResponse(Card card) {
         return CardResponse.builder()
-                .id(card.getId())
-                .name(card.getName())
-                .description(card.getDescription())
-                .color(card.getColor())
+                .id(card.getId() == null ? 0 : card.getId())
+                .name(card.getName() == null ? "" : card.getName())
+                .description(card.getDescription() == null ? "" : card.getDescription())
+                .color(card.getColor() == null ? "": card.getColor())
                 .status(card.getStatus().getValue())
                 .dateCreated(card.getCreatedAt())
                 .build();

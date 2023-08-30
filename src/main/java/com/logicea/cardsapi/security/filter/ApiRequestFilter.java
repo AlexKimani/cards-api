@@ -49,9 +49,8 @@ public class ApiRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String authenticationToken = request.getHeader(AUTHENTICATION_HEADER);
         log.debug("Request URI: {} : Headers: {}", request.getRequestURI(), this.getRequestHeaders(request));
-        if (authenticationToken != null || !request.getRequestURI().contains("authenticate")) {
+        if (authenticationToken != null && !request.getRequestURI().contains("authenticate")) {
             // JWT Token is in the form "Bearer token". Remove Bearer word and get only the Token
-            assert authenticationToken != null;
             if (!authenticationToken.startsWith(AUTHENTICATION_PREFIX)) {
                 log.warn(String.format(ErrorCode.ERROR_1004.getCode()) + "\nHeaders: {}", request.getHeaderNames());
                 throw new AuthenticationException(String.format(ErrorCode.ERROR_1004.getCode()));

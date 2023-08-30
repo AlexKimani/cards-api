@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -62,8 +63,8 @@ public class CardController {
                                                           @RequestParam(defaultValue = "5") int size,
                                                                  @ApiParam(name = "sort_field", value = "Available sort fields: id | name | color | status | date_created", defaultValue = "id")
                                                                  @RequestParam(defaultValue = "id") String sortField) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(this.cardFacade.getAllCardsCreatedByUser(sortField, pageable));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortField));
+        return ResponseEntity.ok(this.cardFacade.getAllCardsCreatedByUser(pageable));
     }
 
     @GetMapping(path = "/id/{id}")
