@@ -11,8 +11,10 @@
     </appender>
 
     <logger name="com.logicea.cardsapi" level="INFO"/>
-    <logger name="com.google" level="WARN"/>
-    <logger name="com.google" level="INFO"/>
+    <logger name="org.testcontainers" level="INFO"/>
+    <logger name="com.zaxxer.hikari" level="WARN"/>
+    <logger name="org.liquibase" level="INFO"/>
+    <logger name="org.springframework.jdbc" level="ERROR"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
@@ -22,7 +24,7 @@
         <root level="INFO">
             <appender-ref ref="STDOUT"/>
             <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-                <file>/var/log/cards-%d{yyyy-MM-dd}.%i.log</file>
+                <file>${LOG_PATH}cards-%d{yyyy-MM-dd}.%i.log</file>
                 <!--  Append to an existing log file if present  -->
                 <append>true</append>
                 <encoder>

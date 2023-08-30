@@ -1,1 +1,21 @@
-
+spring:
+  application:
+    name: cards-api
+  liquibase:
+    change-log: db/changelog/db-test-changelog.yaml
+  sql:
+    init:
+      mode: always
+      continue-on-error: false
+logging:
+  level:
+    "com.logicea.cardsapi" : ${LOG_LEVEL:DEBUG}
+    "liquibase" : info
+  file:
+    path: ${LOG_PATH:/tmp/cards/}
+server:
+  port: ${PORT:8080}
+management:
+  endpoint:
+    health:
+      enabled: true

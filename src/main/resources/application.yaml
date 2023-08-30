@@ -1,1 +1,55 @@
-
+spring:
+  application:
+    name: cards-api
+  datasource:
+    url: ${DATABASE_URL:jdbc:mysql://127.0.0.1:3308/cards?allowPublicKeyRetrieval=true&useSSL=false&useLegacyDatetimeCode=false}
+    password: ${DATABASE_PASSWORD:mauFJcuf5dhRMQrjj}
+    username: ${DATABASE_USER:user}
+    hikari:
+      jdbc-url: ${DATABASE_URL:jdbc:mysql://127.0.0.1:3308/cards?allowPublicKeyRetrieval=true&useSSL=false&useLegacyDatetimeCode=false}
+      password: ${DATABASE_PASSWORD:mauFJcuf5dhRMQrjj}
+      username: ${DATABASE_USER:user}
+      pool-name: cards-pool
+      maximum-pool-size: ${MAX_POOL_SIZE:20}
+      minimum-idle: ${MIN_POOL_SIZE:5}
+      connection-test-query: ${VALIDATION_QUERY:SELECT 1}
+      auto-commit: false
+      schema: ${DATABASE_NAME:cards}
+  liquibase:
+    url: ${LIQUIBASE_DATABASE_URL:jdbc:mysql://127.0.0.1:3308/cards?&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&useLegacyDatetimeCode=false}
+    user: ${DATABASE_USER:user}
+    password: ${DATABASE_PASSWORD:mauFJcuf5dhRMQrjj}
+    change-log: ${LIQUIBASE_CHANGELOG:db/changelog/db-changelog.yaml}
+  sql:
+    init:
+      mode: always
+      continue-on-error: false
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database: mysql
+logging:
+  level:
+    "com.logicea.cardsapi" : ${LOG_LEVEL:DEBUG}
+    "liquibase" : info
+    "org.springframework.web.filter.CommonsRequestLoggingFilter" : DEBUG
+  file:
+    path: ${LOG_PATH:/tmp/cards/}
+server:
+  port: ${PORT:8080}
+  undertow:
+    buffer-size: 1024
+    direct-buffers: true
+    threads:
+      io: 1000
+      worker: 5000
+management:
+  endpoint:
+    health:
+      enabled: true
+springfox:
+  documentation:
+    swagger-ui:
+      enabled: true
+jwt:
+  secret: ${JWT_TOKEN:8705E66163F4715FA42586D510D859BEFDBBBFBE52A191A12E3B7D2EDD230854}
