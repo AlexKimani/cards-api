@@ -1,4 +1,4 @@
 -- Insert sample data for roles
 INSERT INTO roles (role_name)
-VALUES ('Admin'),
-       ('Member');
+VALUES ('ROLE_ADMIN'),
+       ('ROLE_MEMBER');

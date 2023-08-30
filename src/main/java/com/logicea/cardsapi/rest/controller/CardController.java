@@ -4,6 +4,7 @@ import com.logicea.cardsapi.rest.dto.request.CardDeleteRequest;
 import com.logicea.cardsapi.rest.dto.request.CardRequest;
 import com.logicea.cardsapi.rest.dto.response.CardDeletionResponse;
 import com.logicea.cardsapi.rest.dto.response.CardResponse;
+import com.logicea.cardsapi.rest.dto.response.PagedResponse;
 import com.logicea.cardsapi.rest.facade.CardFacade;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,7 +46,7 @@ public class CardController {
             description = "Get a paged list of all cards with page, size, and offset for users with ROLE ADMIN",
             tags = {"Get All Cards", "GET"})
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Page<CardResponse>> getAllCards(@ApiParam(name = "page", value = "The page number.", defaultValue = "0")
+    public ResponseEntity<PagedResponse> getAllCards(@ApiParam(name = "page", value = "The page number.", defaultValue = "0")
                                                        @RequestParam(defaultValue = "0") int page,
                                               @ApiParam(name = "size", value = "The total number of elements per page.", defaultValue = "5")
                                                        @RequestParam(defaultValue = "5") int size,
@@ -59,11 +60,11 @@ public class CardController {
     @Operation(summary = "Get a paged list of all cards with page, size, and offset",
             description = "Get a paged list of all cards with page, size, and offset for user",
             tags = {"Get Cards by User", "GET"})
-    public ResponseEntity<Page<CardResponse>> getAllCardsForUser(@ApiParam(name = "page", value = "The page number.", defaultValue = "0")
+    public ResponseEntity<PagedResponse> getAllCardsForUser(@ApiParam(name = "page", value = "The page number.", defaultValue = "0")
                                                           @RequestParam(defaultValue = "0") int page,
-                                                          @ApiParam(name = "size", value = "The total number of elements per page.", defaultValue = "5")
+                                                            @ApiParam(name = "size", value = "The total number of elements per page.", defaultValue = "5")
                                                           @RequestParam(defaultValue = "5") int size,
-                                                                 @ApiParam(name = "sort_field", value = "Available sort fields: id | name | color | status | date_created", defaultValue = "id")
+                                                            @ApiParam(name = "sort_field", value = "Available sort fields: id | name | color | status | date_created", defaultValue = "id")
                                                                  @RequestParam(defaultValue = "id") String sortField) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortField));
         return ResponseEntity.ok(this.cardFacade.getAllCardsCreatedByUser(pageable));

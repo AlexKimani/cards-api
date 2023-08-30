@@ -64,8 +64,8 @@ public class GlobalErrorWebExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleAccessDeniedException(AccessDeniedException ex, HttpServletRequest request) {
         List<String> errors = Collections.singletonList(ex.getMessage());
         log.error("Invalid Authentication Exception occurred: {}{}", ex.getMessage(), new ErrorLogger(request));
-        return new ResponseEntity<>(setApiResponse(ErrorCode.ERROR_1007.getMessage(),
-                ErrorCode.ERROR_1007.getCode(), errors), new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(setApiResponse(ErrorCode.ERROR_1006.getMessage(),
+                ErrorCode.ERROR_1006.getCode(), errors), new HttpHeaders(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
@@ -96,8 +96,8 @@ public class GlobalErrorWebExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleAuthenticationException(AuthenticationException ex, HttpServletRequest request) {
         List<String> errors = Collections.singletonList(ex.getMessage());
         log.error("Authentication Exception occurred: {}{}", ex.getMessage(), new ErrorLogger(request));
-        return new ResponseEntity<>(setApiResponse(ErrorCode.ERROR_1007.getMessage(),
-                ErrorCode.ERROR_1007.getCode(), errors), new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(setApiResponse(ErrorCode.ERROR_1006.getMessage(),
+                ErrorCode.ERROR_1006.getCode(), errors), new HttpHeaders(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(CardNotFoundException.class)

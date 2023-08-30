@@ -3,6 +3,8 @@ package com.logicea.cardsapi;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
+import com.logicea.cardsapi.rest.dto.request.LoginRequest;
+import com.logicea.cardsapi.rest.facade.impl.AuthenticationFacadeImpl;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,20 +36,44 @@ public abstract class AbstractIntegrationTest  {
     @Autowired
     protected WireMockServer wireMockServer;
 
-
+    @Autowired
+    protected AuthenticationFacadeImpl authenticationFacade;
 
     @AfterEach
     public void afterEach() {
         wireMockServer.resetAll();
     }
 
-    protected String createSuccessfulAuthenticationRequestStub() {
+    protected String generateAdminUserTestToken() throws Exception {
+        LoginRequest request = new LoginRequest();
+        request = objectMapper.readValue(createSuccessfulAdminAuthenticationRequestStub(), LoginRequest.class);
+        return this.authenticationFacade.createAuthentication(request).getToken();
+    }
+
+    protected String generateNormalUserTestToken() throws Exception {
+        LoginRequest request = new LoginRequest();
+        request = objectMapper.readValue(createSuccessfulMemberAuthenticationRequestStub(), LoginRequest.class);
+        return this.authenticationFacade.createAuthentication(request).getToken();
+    }
+
+    protected String createSuccessfulAdminAuthenticationRequestStub() {
         String text = "{}";
         try {
-            File resource = new ClassPathResource("test-cases/requests/successful-authentication-test-request.json").getFile();
+            File resource = new ClassPathResource("test-cases/requests/successful-admin-authentication-test-request.json").getFile();
             text = new String(Files.readAllBytes(resource.toPath()));
         } catch (IOException e) {
-            fail("Failed to retrieve test data [createSuccessfulAuthenticationRequestStub] message = " + e.getMessage());
+            fail("Failed to retrieve test data [createSuccessfulAdminAuthenticationRequestStub] message = " + e.getMessage());
+        }
+        return text;
+    }
+
+    protected String createSuccessfulMemberAuthenticationRequestStub() {
+        String text = "{}";
+        try {
+            File resource = new ClassPathResource("test-cases/requests/successful-member-authentication-test-request.json").getFile();
+            text = new String(Files.readAllBytes(resource.toPath()));
+        } catch (IOException e) {
+            fail("Failed to retrieve test data [createSuccessfulAdminAuthenticationRequestStub] message = " + e.getMessage());
         }
         return text;
     }
@@ -63,4 +89,48 @@ public abstract class AbstractIntegrationTest  {
         return text;
     }
 
+    protected String createSuccessfulCreateCardRequestStub() {
+        String text = "{}";
+        try {
+            File resource = new ClassPathResource("test-cases/requests/valid-card-request.json").getFile();
+            text = new String(Files.readAllBytes(resource.toPath()));
+        } catch (IOException e) {
+            fail("Failed to retrieve test data [createSuccessfulCreateCardRequestStub] message = " + e.getMessage());
+        }
+        return text;
+    }
+
+    protected String createInvalidCreateCardRequestStub() {
+        String text = "{}";
+        try {
+            File resource = new ClassPathResource("test-cases/requests/invalid-card-request.json").getFile();
+            text = new String(Files.readAllBytes(resource.toPath()));
+        } catch (IOException e) {
+            fail("Failed to retrieve test data [createInvalidCreateCardRequestStub] message = " + e.getMessage());
+        }
+        return text;
+    }
+
+    protected String createUpdateCardRequestStub() {
+        String text = "{}";
+        try {
+            File resource = new ClassPathResource("test-cases/requests/update-card-request.json").getFile();
+            text = new String(Files.readAllBytes(resource.toPath()));
+        } catch (IOException e) {
+            fail("Failed to retrieve test data [createUpdateCardRequestStub] message = " + e.getMessage());
+        }
+        return text;
+    }
+
+    protected String createDeleteCardRequestStub(long id) {
+        String text = "{}";
+        try {
+            File resource = new ClassPathResource("test-cases/requests/delete-card-request.json").getFile();
+            text = new String(Files.readAllBytes(resource.toPath()))
+                    .replace("#ID", String.valueOf(id));
+        } catch (IOException e) {
+            fail("Failed to retrieve test data [createUpdateCardRequestStub] message = " + e.getMessage());
+        }
+        return text;
+    }
 }

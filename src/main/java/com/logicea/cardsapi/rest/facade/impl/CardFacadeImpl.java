@@ -9,6 +9,7 @@ import com.logicea.cardsapi.rest.dto.request.CardDeleteRequest;
 import com.logicea.cardsapi.rest.dto.request.CardRequest;
 import com.logicea.cardsapi.rest.dto.response.CardDeletionResponse;
 import com.logicea.cardsapi.rest.dto.response.CardResponse;
+import com.logicea.cardsapi.rest.dto.response.PagedResponse;
 import com.logicea.cardsapi.rest.facade.CardFacade;
 import com.logicea.cardsapi.rest.mapper.CardMapper;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class CardFacadeImpl implements CardFacade {
      * @return the all cards by user
      */
     @Override
-    public Page<CardResponse> getAllCards(Pageable pageable) {
+    public PagedResponse getAllCards(Pageable pageable) {
         Page<Card> cards = this.cardService.getAllCards(pageable);
         return CardMapper.getPagedCardResponse(cards);
     }
@@ -44,7 +45,7 @@ public class CardFacadeImpl implements CardFacade {
      * @return the all cards created by user
      */
     @Override
-    public Page<CardResponse> getAllCardsCreatedByUser(Pageable pageable) {
+    public PagedResponse getAllCardsCreatedByUser(Pageable pageable) {
         Page<Card> cards = this.cardService.getAllCardsCreatedByUser(this.auditedUserService.getCurrentUser(), pageable);
         return CardMapper.getPagedCardResponse(cards);
     }
