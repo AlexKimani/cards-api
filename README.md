@@ -35,16 +35,13 @@ For further reference, please consider the following sections:
 * [Testcontainers R2DBC support Reference Guide](https://java.testcontainers.org/modules/databases/r2dbc/)
 * [Testcontainers MySQL Module Reference Guide](https://java.testcontainers.org/modules/databases/mysql/)
 * [Spring Data JPA](https://docs.spring.io/spring-boot/docs/3.1.3/reference/htmlsingle/index.html#data.sql.jpa-and-spring-data)
-* [OAuth2 Client](https://docs.spring.io/spring-boot/docs/3.1.3/reference/htmlsingle/index.html#web.security.oauth2.client)
 * [Spring Reactive Web](https://docs.spring.io/spring-boot/docs/3.1.3/reference/htmlsingle/index.html#web.reactive)
 * [Spring Data R2DBC](https://docs.spring.io/spring-boot/docs/3.1.3/reference/htmlsingle/index.html#data.sql.r2dbc)
 * [Liquibase Migration](https://docs.spring.io/spring-boot/docs/3.1.3/reference/htmlsingle/index.html#howto.data-initialization.migration-tool.liquibase)
 * [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/3.1.3/reference/htmlsingle/index.html#actuator)
 * [Prometheus](https://docs.spring.io/spring-boot/docs/3.1.3/reference/htmlsingle/index.html#actuator.metrics.export.prometheus)
-* [OAuth2 Authorization Server](https://docs.spring.io/spring-boot/docs/3.1.3/reference/htmlsingle/index.html#web.security.oauth2.authorization-server)
 * [Testcontainers](https://java.testcontainers.org/)
 * [Spring Security](https://docs.spring.io/spring-boot/docs/3.1.3/reference/htmlsingle/index.html#web.security)
-* [OAuth2 Resource Server](https://docs.spring.io/spring-boot/docs/3.1.3/reference/htmlsingle/index.html#web.security.oauth2.server)
 
 ## Service Maintainers
 * Primary: Joe Alex Kimani
