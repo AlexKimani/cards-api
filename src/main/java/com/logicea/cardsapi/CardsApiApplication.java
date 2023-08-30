@@ -13,6 +13,7 @@ import org.springframework.boot.context.ApplicationPidFileWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 /**
  * The type Cards api application.
@@ -61,6 +62,16 @@ public class CardsApiApplication {
     @Bean
     public AuditorAware<User> auditorAware() {
         return new AuditAwareImpl();
+    }
+
+    @Bean
+    public CommonsRequestLoggingFilter requestLoggingFilter() {
+        CommonsRequestLoggingFilter requestLoggingFilter = new CommonsRequestLoggingFilter();
+        requestLoggingFilter.setIncludeClientInfo(true);
+        requestLoggingFilter.setIncludeHeaders(true);
+        requestLoggingFilter.setIncludeQueryString(true);
+        requestLoggingFilter.setIncludePayload(true);
+        return requestLoggingFilter;
     }
 
 }

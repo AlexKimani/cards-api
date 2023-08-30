@@ -44,8 +44,8 @@ public class CardFacadeImpl implements CardFacade {
      * @return the all cards created by user
      */
     @Override
-    public Page<CardResponse> getAllCardsCreatedByUser(String sortField, Pageable pageable) {
-        Page<Card> cards = this.cardService.getAllCardsCreatedByUser(this.auditedUserService.getCurrentUser(), sortField, pageable);
+    public Page<CardResponse> getAllCardsCreatedByUser(Pageable pageable) {
+        Page<Card> cards = this.cardService.getAllCardsCreatedByUser(this.auditedUserService.getCurrentUser(), pageable);
         return CardMapper.getPagedCardResponse(cards);
     }
 

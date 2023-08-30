@@ -20,10 +20,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Serial;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.reducing;
 import static java.util.stream.Collectors.toList;
 
 @Slf4j
@@ -32,12 +37,12 @@ import static java.util.stream.Collectors.toList;
 public class GlobalErrorWebExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiErrorResponse> handleValidationErrors(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ApiErrorResponse> handleValidationErrors(MethodArgumentNotValidException ex, HttpServletRequest request) {
         List<String> errors = ex.getBindingResult().getFieldErrors()
                 .stream().map(FieldError::getDefaultMessage).collect(toList());
-        log.error("Validation error occurred: {}", ex.getMessage());
+        log.error("Validation error occurred: {}{}", ex.getMessage(), new ErrorLogger(request));
 
-        return new ResponseEntity<>(setApiResponse("Validation error occurred", ErrorCode.ERROR_1400.getCode(),errors),
+        return new ResponseEntity<>(setApiResponse(ErrorCode.ERROR_1400.getMessage(), ErrorCode.ERROR_1400.getCode(),errors),
                 new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
@@ -60,15 +65,15 @@ public class GlobalErrorWebExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ApiErrorResponse> handleAccessDeniedException(AccessDeniedException ex, HttpServletRequest request) {
         List<String> errors = Collections.singletonList(ex.getMessage());
-        log.error("Invalid Authentication Exception occurred: {}", ex.getMessage(),ex);
-        return new ResponseEntity<>(setApiResponse("Invalid Authentication Exception error occurred: "+ ErrorCode.ERROR_1007.getMessage(),
+        log.error("Invalid Authentication Exception occurred: {}{}", ex.getMessage(), new ErrorLogger(request));
+        return new ResponseEntity<>(setApiResponse(ErrorCode.ERROR_1007.getMessage(),
                 ErrorCode.ERROR_1007.getCode(), errors), new HttpHeaders(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
     public ResponseEntity<ApiErrorResponse> handleExpiredJwtException(ExpiredJwtException ex, HttpServletRequest request) {
         List<String> errors = Collections.singletonList(ex.getMessage());
-        log.error("Expired Exception occurred: {}", ex.getMessage(), ex);
+        log.error("Expired Exception occurred: {}{}", ex.getMessage(), new ErrorLogger(request));
         return new ResponseEntity<>(setApiResponse(ErrorCode.ERROR_1006.getMessage(),
                 ErrorCode.ERROR_1006.getCode(), errors), new HttpHeaders(), HttpStatus.UNAUTHORIZED);
     }
@@ -76,7 +81,7 @@ public class GlobalErrorWebExceptionHandler {
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpServletRequest request) {
         List<String> errors = Collections.singletonList(ex.getMessage());
-        log.error("No Handler Found Exception occurred: URL: {}",request.getContextPath());
+        log.error("No Handler Found Exception occurred: {}{}",ex.getMessage(), new ErrorLogger(request));
         return new ResponseEntity<>(setApiResponse(String.format(ErrorCode.ERROR_1404.getMessage(), request.getContextPath()),
                 ErrorCode.ERROR_1404.getCode(), errors), new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
@@ -84,15 +89,15 @@ public class GlobalErrorWebExceptionHandler {
     @ExceptionHandler(ServiceException.class)
     public ResponseEntity<ApiErrorResponse> handleServiceException(ServiceException ex, HttpServletRequest request) {
         List<String> errors = Collections.singletonList(ex.getMessage());
-        log.error("Service Exception occurred: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(setApiResponse(ErrorCode.ERROR_1500.getMessage(),
+        log.error("Service Exception occurred: {}{}", ex.getMessage(), new ErrorLogger(request));
+        return new ResponseEntity<>(setApiResponse(String.format(ErrorCode.ERROR_1500.getMessage(), ex.getMessage()),
                 ErrorCode.ERROR_1500.getCode(), errors), new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ApiErrorResponse> handleAuthenticationException(AuthenticationException ex, HttpServletRequest request) {
         List<String> errors = Collections.singletonList(ex.getMessage());
-        log.error("Authentication Exception occurred: {}", ex.getMessage(), ex);
+        log.error("Authentication Exception occurred: {}{}", ex.getMessage(), new ErrorLogger(request));
         return new ResponseEntity<>(setApiResponse(ErrorCode.ERROR_1007.getMessage(),
                 ErrorCode.ERROR_1007.getCode(), errors), new HttpHeaders(), HttpStatus.UNAUTHORIZED);
     }
@@ -100,17 +105,17 @@ public class GlobalErrorWebExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex, HttpServletRequest request) {
         List<String> errors = Collections.singletonList(ex.getMessage());
-        log.error("Illegal Argument Exception occurred: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(setApiResponse("Illegal Argument Exception occurred ",
+        log.error("Illegal Argument Exception occurred: {}{}", ex.getMessage(), new ErrorLogger(request));
+        return new ResponseEntity<>(setApiResponse(String.format(ErrorCode.ERROR_1500.getMessage(), ex.getMessage()),
                 ErrorCode.ERROR_1500.getCode(), errors), new HttpHeaders(), HttpStatus.EXPECTATION_FAILED);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex, HttpServletRequest request) {
         List<String> errors = Collections.singletonList(ex.getMessage());
-        log.error("Resource Not Found Exception occurred: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(setApiResponse(String.format(ErrorCode.ERROR_1500.getMessage(), request.getMethod()),
-                ErrorCode.ERROR_1500.getCode(), errors),
+        log.error("Resource Not Found Exception occurred: {}{}", ex.getMessage(), new ErrorLogger(request));
+        return new ResponseEntity<>(setApiResponse(String.format(ErrorCode.ERROR_1405.getMessage(), request.getMethod()),
+                ErrorCode.ERROR_1405.getCode(), errors),
                 new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
@@ -118,15 +123,60 @@ public class GlobalErrorWebExceptionHandler {
     public final ResponseEntity<ApiErrorResponse> handleGeneralExceptions(Exception ex) {
         List<String> errors = Collections.singletonList(ex.getMessage());
         log.error("GeneralException occurred: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(setApiResponse(ErrorCode.ERROR_1500.getMessage(),ErrorCode.ERROR_1500.getCode(), errors),
+        return new ResponseEntity<>(setApiResponse(String.format(ErrorCode.ERROR_1500.getMessage(), ex.getMessage()),
+                ErrorCode.ERROR_1500.getCode(), errors),
                 new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public final ResponseEntity<ApiErrorResponse> handleRuntimeExceptions(RuntimeException ex) {
+    public final ResponseEntity<ApiErrorResponse> handleRuntimeExceptions(RuntimeException ex, HttpServletRequest request) {
         List<String> errors = Collections.singletonList(ex.getMessage());
-        log.error("Runtime Exception occurred: {}", ex.getMessage(), ex);
+        log.error("Runtime Exception occurred: {}{}", ex.getMessage(), new ErrorLogger(request));
         return new ResponseEntity<>(setApiResponse("Runtime Exception occurred", ErrorCode.ERROR_1500.getCode(), errors),
                 new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private static class ErrorLogger implements Serializable {
+        @Serial
+        private static final long serialVersionUID = 1L;
+        private final Timestamp timestamp;
+        private final String requestUrl;
+        private final String method;
+        private final String headers;
+        private final String parameters;
+
+        public ErrorLogger(HttpServletRequest request) {
+            this.timestamp = new Timestamp(System.currentTimeMillis());
+            this.requestUrl = request.getRequestURI();
+            this.method = request.getMethod();
+            this.headers = this.getRequestHeaders(request);
+            this.parameters = this.setParameters(request.getParameterMap());
+        }
+
+        private String getRequestHeaders(HttpServletRequest request) {
+            StringBuilder builder = new StringBuilder(10000);
+            Enumeration<?> names = request.getHeaderNames();
+            while (names.hasMoreElements()) {
+                String name = (String) names.nextElement();
+                Enumeration<?> values = request.getHeaders(name);
+                while (values.hasMoreElements()) {
+                    builder.append(String.format("%s  :  %s%n",name, values.nextElement()));
+                }
+            }
+            return builder.toString();
+        }
+
+        private String setParameters(Map<String, String[]> parametersMap) {
+            return parametersMap.entrySet()
+                    .stream()
+                    .map(entry -> String.format("%s = %s %n", entry.getKey(), Arrays.asList(entry.getValue())))
+                    .collect(Collectors.joining());
+        }
+
+        @Override
+        public String toString() {
+            return "%nTimestamp  :  %s%nRequestURL :  %s%nMethod     :  %s%nHeaders  :  %s%nParameters :  %s%n"
+                    .formatted(timestamp, requestUrl, method, headers, parameters);
+        }
     }
 }

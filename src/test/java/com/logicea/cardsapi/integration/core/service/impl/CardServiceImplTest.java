@@ -45,7 +45,7 @@ class CardServiceImplTest extends AbstractIntegrationTest {
     @Test
     void testGetAllCardsCreatedByUser()  throws Exception {
         Pageable pageable = PageRequest.of(0, 5, Sort.by("color"));
-        log.info("{}", this.cardService.getAllCardsCreatedByUser("admin@test.com", "color", pageable)
+        log.info("{}", this.cardService.getAllCardsCreatedByUser("admin@test.com",pageable)
                 .getContent());
     }
 }

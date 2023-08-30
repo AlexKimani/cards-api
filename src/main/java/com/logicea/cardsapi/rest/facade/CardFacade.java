@@ -23,7 +23,7 @@ public interface CardFacade {
      * @param pageable  The Page setup details
      * @return the all cards created by user
      */
-    Page<CardResponse> getAllCardsCreatedByUser(String sortField, Pageable pageable);
+    Page<CardResponse> getAllCardsCreatedByUser(Pageable pageable);
 
     /**
      * Create new card.

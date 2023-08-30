@@ -14,10 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -81,8 +78,8 @@ public class SpringSecurityTestConfig {
         return userEntity;
     }
 
-    private List<Role> setRoles() {
-        List<Role> roles = new ArrayList<>();
+    private Set<Role> setRoles() {
+        Set<Role> roles = new HashSet<>();
         Role role = new Role("Admin");
         role.setPrivileges(this.setPrivilege());
         return roles;

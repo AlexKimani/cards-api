@@ -32,6 +32,7 @@ logging:
   level:
     "com.logicea.cardsapi" : ${LOG_LEVEL:DEBUG}
     "liquibase" : info
+    "org.springframework.web.filter.CommonsRequestLoggingFilter" : DEBUG
   file:
     path: ${LOG_PATH:/tmp/cards/}
 server:

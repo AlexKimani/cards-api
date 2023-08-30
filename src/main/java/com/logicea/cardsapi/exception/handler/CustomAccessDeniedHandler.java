@@ -30,8 +30,8 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         ObjectMapper mapper = new ObjectMapper();
         ApiErrorResponse apiResponse = ApiErrorResponse.builder()
                 .timestamp(System.currentTimeMillis())
-                .code(ErrorCode.ERROR_1007.getCode())
-                .message(ErrorCode.ERROR_1007.getMessage())
+                .code(ErrorCode.ERROR_1006.getCode())
+                .message(ErrorCode.ERROR_1006.getMessage())
                 .status(HttpStatus.UNAUTHORIZED.toString())
                 .build();
         response.setStatus(HttpStatus.UNAUTHORIZED.value());

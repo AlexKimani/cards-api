@@ -11,6 +11,7 @@ public enum ErrorCode {
     ERROR_1007("1007", "Authentication failed: Invalid or expired token"),
     ERROR_1400("1400", "Validation error occurred,"),
     ERROR_1404("1404", "Handler not found for URL resource: %s"),
+    ERROR_1405("1405", "Resource not found for URL resource: %s"),
     ERROR_1500("1500", "Unexpected error occurred: %s"),
     ERROR_1501("1501", "Offset index must not be less than zero!"),
     ERROR_1502("1502", "Limit must not be less than one!"),
