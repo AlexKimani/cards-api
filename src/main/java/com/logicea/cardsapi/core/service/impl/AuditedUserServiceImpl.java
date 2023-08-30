@@ -45,7 +45,7 @@ public class AuditedUserServiceImpl implements AuditedUserService {
     @Override
     public boolean checkIfCurrentUserIsAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.info("Authentication object: {}", authentication);
+        log.debug("Authentication object: {}", authentication);
         return authentication != null && authentication.getAuthorities()
                 .stream()
                 .anyMatch(a -> a.getAuthority()

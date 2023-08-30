@@ -2,6 +2,7 @@ package com.logicea.cardsapi.exception.handler;
 
 import com.logicea.cardsapi.core.enums.ErrorCode;
 import com.logicea.cardsapi.exception.AuthenticationException;
+import com.logicea.cardsapi.exception.CardNotFoundException;
 import com.logicea.cardsapi.exception.ServiceException;
 import com.logicea.cardsapi.rest.dto.response.ApiErrorResponse;
 import com.logicea.cardsapi.rest.dto.response.error.ApiSubError;
@@ -97,6 +98,14 @@ public class GlobalErrorWebExceptionHandler {
         log.error("Authentication Exception occurred: {}{}", ex.getMessage(), new ErrorLogger(request));
         return new ResponseEntity<>(setApiResponse(ErrorCode.ERROR_1007.getMessage(),
                 ErrorCode.ERROR_1007.getCode(), errors), new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(CardNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleCardNotFoundException(CardNotFoundException ex, HttpServletRequest request) {
+        List<String> errors = Collections.singletonList(ex.getMessage());
+        log.error("CardNotFoundException Exception occurred: {}{}", ex.getMessage(), new ErrorLogger(request));
+        return new ResponseEntity<>(setApiResponse(ErrorCode.ERROR_1604.getMessage(),
+                ErrorCode.ERROR_1604.getCode(), errors), new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
