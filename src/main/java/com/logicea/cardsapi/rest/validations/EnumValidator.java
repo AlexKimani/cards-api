@@ -1,5 +1,6 @@
 package com.logicea.cardsapi.rest.validations;
 
+import com.logicea.cardsapi.core.enums.CardStatus;
 import jakarta.validation.*;
 
 import java.lang.annotation.Documented;
@@ -48,7 +49,7 @@ public @interface EnumValidator {
 
             Enum[] enumValArr = enumClass.getEnumConstants();
 
-            Arrays.stream(enumValArr).forEach(enumVal -> this.valueList.add(enumVal.toString().toUpperCase()));
+            Arrays.stream(enumValArr).forEach(enumVal -> this.valueList.add(enumVal.name().toUpperCase()));
         }
 
         /**
@@ -65,7 +66,7 @@ public @interface EnumValidator {
         @Override
         public boolean isValid(String value, ConstraintValidatorContext context) {
             if (value == null) return true;
-            return valueList.contains(value.toUpperCase());
+            return valueList.contains(CardStatus.fromString(value).toString());
         }
     }
 }

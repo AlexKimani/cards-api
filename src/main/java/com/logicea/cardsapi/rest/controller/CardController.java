@@ -48,8 +48,10 @@ public class CardController {
     public ResponseEntity<Page<CardResponse>> getAllCards(@ApiParam(name = "page", value = "The page number.", defaultValue = "0")
                                                        @RequestParam(defaultValue = "0") int page,
                                               @ApiParam(name = "size", value = "The total number of elements per page.", defaultValue = "5")
-                                                       @RequestParam(defaultValue = "5") int size) {
-        Pageable pageable = PageRequest.of(page, size);
+                                                       @RequestParam(defaultValue = "5") int size,
+                                                          @ApiParam(name = "sort_field", value = "Available sort fields: id | name | color | status | date_created", defaultValue = "id")
+                                                              @RequestParam(defaultValue = "id") String sortField) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortField));
         return ResponseEntity.ok(this.cardFacade.getAllCards(pageable));
     }
 
