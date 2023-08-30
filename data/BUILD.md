@@ -38,12 +38,12 @@ git clone git@github.com:AlexKimani/cards-api.git
 All endpoints are documented on Swagger API: `{base-url}/swagger-ui.html` with JWT Authentication Support
 * Authentication API: [POST] `{base-url}/v1/authenticate`
 * Create Card: [POST] `{base-url}/v1/card`
-* Get card by id: [GET] `{base-url}/v1/card/{id}`
+* Get card by id: [GET] `{base-url}/v1/card/id/{id}`
 * Get user cards: [GET] `{base-url}/v1/card/all`
 * Get All Cards: Admin [GET] `{base-url}/v1/card/admin`
-* Update a card: [PUT] `{base-url}/v1/card/{id}`
-* Delete a Card: [DELETE] `{base-url}/v1/card`
-* Delete All cards: Admin [DELETE] `{base-url}/v1/card/admin/all`
+* Update a card: [PUT] `{base-url}/v1/card/update/{id}`
+* Delete a Card: [DELETE] `{base-url}/v1/card/delete`
+* Delete All cards: Admin [DELETE] `{base-url}/v1/card/admin/delete/all`
 
 ### Testing the application
 * You can run all the unit and integrations tests by running the command `mvn clean test`

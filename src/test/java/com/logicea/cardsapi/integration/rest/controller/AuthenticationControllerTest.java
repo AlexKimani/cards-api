@@ -2,7 +2,6 @@ package com.logicea.cardsapi.integration.rest.controller;
 
 import com.logicea.cardsapi.AbstractIntegrationTest;
 import com.logicea.cardsapi.AbstractIntegrationTestInitializer;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
@@ -45,7 +44,7 @@ class AuthenticationControllerTest extends AbstractIntegrationTest {
     void testSuccessfulUserAuthentication() throws Exception {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                         .post("/v1/authenticate")
-                        .content(createSuccessfulAuthenticationRequestStub())
+                        .content(createSuccessfulAdminAuthenticationRequestStub())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
         int status = result.getResponse().getStatus();
