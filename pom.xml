@@ -15,7 +15,7 @@
     <description>cards-api</description>
     <properties>
         <java.version>17</java.version>
-        <snakeyaml.version>2.0</snakeyaml.version>
+        <snakeyaml.version>2.2</snakeyaml.version>
         <json.webtoken.version>0.11.5</json.webtoken.version>
     </properties>
     <dependencies>
